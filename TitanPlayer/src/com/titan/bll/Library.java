@@ -13,10 +13,10 @@ import java.util.*;
  */
 public class Library{
     
-    public Set<Song> songs;
+    public List<Song> songs;
     
     public Library(){
-        songs = new HashSet<Song>();
+        songs = new ArrayList<Song>();
     }
 
     
@@ -28,19 +28,25 @@ public class Library{
    
 
      public void deleteSong(Song songToDelete) {
+
          Iterator<Song> iterator = songs.iterator();
          
          if(iterator.hasNext()){
-             if(songs.equals(songToDelete)){
+             if(songToDelete.equals(songToDelete)){
               songs.remove(songToDelete);
-              iterator.next();
              }
          }
      }
 
+
+
      
     public int songCount(){
         return songs.size();
+    }
+
+    public List<Song> getAllSongs() {
+        return songs;
     }
  
     

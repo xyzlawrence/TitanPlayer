@@ -7,7 +7,8 @@ package com.titan.test;
 
 import com.titan.bll.Playlist;
 import com.titan.bll.Song;
-import static org.junit.Assert.assertEquals;
+import java.util.List;
+import static org.junit.Assert.*;
 import org.junit.*;
 
 /**
@@ -51,9 +52,43 @@ public class PlaylistTest {
     @Test
     public void addSongToPlaylistTest(){
         Playlist addSongToPlaylist = new Playlist("Brandon Rock Songs");
-        addSongToPlaylist.addSong(new Song("Rock of Love", "Queen"));
+        addSongToPlaylist.addSong(new Song("Rock of Love", "Queen", "/Test.mp3"));
         assertEquals("Brandon Rock Songs", addSongToPlaylist.getPlaylistTitle());
         assertEquals(1, addSongToPlaylist.songCount());
+    }
+    
+    @Test
+    public void removeSongFromPlaylistTest(){
+        
+        Playlist myPlaylist = new Playlist("90 Songs");
+        myPlaylist.addSong(new Song("C", "C", "/Test.mp3"));
+        myPlaylist.addSong(new Song("B", "B", "/Test.mp3"));
+        myPlaylist.addSong(new Song("A", "A", "/Test.mp3"));
+        Song songToRemove = new Song("B", "B", "/Test.mp3");
+        myPlaylist.deleteSong(songToRemove);
+        List<Song> remainingSongs = myPlaylist.getAllSongs();
+        assertEquals(2, myPlaylist.songCount());
+        assertFalse(remainingSongs.contains(songToRemove));
+    }
+    
+    @Test
+    public void sortPlaylistByTitle(){
+        Playlist myPlaylist = new Playlist("90 Songs");
+        myPlaylist.addSong(new Song("C", "C", "/Test.mp3"));
+        myPlaylist.addSong(new Song("B", "B", "/Test.mp3"));
+        myPlaylist.addSong(new Song("A", "A", "/Test.mp3"));
+        myPlaylist.sortByTitle();
+        assertEquals(myPlaylist.getSongTitle(0), "A" );
+    }
+    
+    @Test
+    public void sortPlaylistByArtist(){
+    Playlist myPlaylist = new Playlist("90 Songs");
+    myPlaylist.addSong(new Song("C", "C", "/Test.mp3"));
+    myPlaylist.addSong(new Song("B", "B", "/Test.mp3"));
+    myPlaylist.addSong(new Song("A", "A", "/Test.mp3"));
+    myPlaylist.sortByArtist();
+    assertEquals(myPlaylist.getSongArtist(0), "A" );
     }
     
     

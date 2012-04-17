@@ -38,15 +38,14 @@ public class PlayerTest {
     @Test
     public void createPlayer(){
         Player createPlayer = new Player();
-        createPlayer.loadPlaylist(new Playlist("90 Music"));
-        assertEquals("90 Music" , createPlayer.isPlaylistLoaded("90 Music"));
+        assertEquals(true , createPlayer.isPlayerCreated());
     }
     
     @Test
     public void addPlaylistWithSongsToPlayer(){
         Playlist myPlaylist = new Playlist("80 Music");
         Player createPlayer = new Player();
-        myPlaylist.addSong(new Song("Three Kings", "Allen Smith"));     
+        myPlaylist.addSong(new Song("Three Kings", "Allen Smith", "/Test.mp3"));     
         createPlayer.loadPlaylist(myPlaylist);
         assertEquals("80 Music" , createPlayer.isPlaylistLoaded("80 Music"));
         assertEquals("Three Kings", createPlayer.getCurrentSong()); 
@@ -55,22 +54,47 @@ public class PlayerTest {
     @Test
     public void playSong(){
         Playlist myPlaylist = new Playlist("80 Music");
-        Player createPlayer = new Player();
-        myPlaylist.addSong(new Song("Three Kings", "Allen Smith"));     
-        createPlayer.loadPlaylist(myPlaylist);
-        assertEquals("80 Music" , createPlayer.isPlaylistLoaded("80 Music"));
-        assertEquals("Three Kings", createPlayer.getCurrentSong()); 
+        Player myPlayer = new Player();
+        myPlaylist.addSong(new Song("Three Kings", "Allen Smith", "/Test.mp3"));     
+        myPlayer.loadPlaylist(myPlaylist);
+        myPlayer.playSong();
+        assertTrue(myPlayer.isPlaying());
+    }
+    
+    @Test
+    public void pauseSong() throws InterruptedException{
+        Playlist myPlaylist = new Playlist("80 Music");
+        Player myPlayer = new Player();
+        myPlaylist.addSong(new Song("Three Kings", "Allen Smith", "/Test.mp3"));     
+        myPlayer.loadPlaylist(myPlaylist);
+        myPlayer.playSong();
+        myPlayer.pauseSong();
+        assertTrue(myPlayer.isPaused());
+        
+    }
+    
+    @Test
+    public void resumeSong() throws InterruptedException{
+        Playlist myPlaylist = new Playlist("80 Music");
+        Player myPlayer = new Player();
+        myPlaylist.addSong(new Song("Three Kings", "Allen Smith", "/Test.mp3"));     
+        myPlayer.loadPlaylist(myPlaylist);
+        myPlayer.playSong();
+        myPlayer.pauseSong();
+        assertTrue(myPlayer.isPaused());
+        myPlayer.resumeSong();
+        assertFalse(myPlayer.isPaused());
+        
     }
     
     @Test
     public void skipSong(){
         Playlist myPlaylist = new Playlist("80 Music");
         Player myPlayer = new Player();
-        myPlaylist.addSong(new Song("Three Kings", "Allen Smith"));
-        myPlaylist.addSong(new Song("Rock On", "Allen Smith"));
-        myPlaylist.addSong(new Song("Blank Stare", "Allen Smith"));
+        myPlaylist.addSong(new Song("Three Kings", "Allen Smith", "/Test.mp3"));
+        myPlaylist.addSong(new Song("Rock On", "Allen Smith", "/Test.mp3"));
+        myPlaylist.addSong(new Song("Blank Stare", "Allen Smith", "/Test.mp3"));
         myPlayer.loadPlaylist(myPlaylist);
-        assertEquals("80 Music" , myPlayer.isPlaylistLoaded("80 Music"));
         assertEquals("Three Kings", myPlayer.getCurrentSong());
         myPlayer.skipSong();
         assertEquals("Rock On", myPlayer.getCurrentSong());
@@ -78,5 +102,24 @@ public class PlayerTest {
         assertEquals("Blank Stare", myPlayer.getCurrentSong());
         
     }
+    
+    @Test
+    public void backSong(){
+        Playlist myPlaylist = new Playlist("80 Music");
+        Player myPlayer = new Player();
+        myPlaylist.addSong(new Song("Three Kings", "Allen Smith", "/Test.mp3"));
+        myPlaylist.addSong(new Song("Rock On", "Allen Smith", "/Test.mp3"));
+        myPlaylist.addSong(new Song("Blank Stare", "Allen Smith", "/Test.mp3"));
+        myPlayer.loadPlaylist(myPlaylist);
+        assertEquals("Three Kings", myPlayer.getCurrentSong());
+        myPlayer.skipSong();
+        assertEquals("Rock On", myPlayer.getCurrentSong());
+        myPlayer.backSong();
+        assertEquals("Three Kings", myPlayer.getCurrentSong());
+        
+    }
+    
+  
+    
     
 }

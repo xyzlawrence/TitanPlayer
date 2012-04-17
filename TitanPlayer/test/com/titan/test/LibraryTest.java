@@ -6,6 +6,7 @@ package com.titan.test;
 
 import com.titan.bll.Library;
 import com.titan.bll.Song;
+import java.util.List;
 
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -45,29 +46,31 @@ public class LibraryTest {
     @Test
     public void addSongTest(){
         Library addLibrary = new Library();
-        addLibrary.addSong(new Song("Rock Star", "John Smith"));
-        addLibrary.addSong(new Song("Rock On", "Randy Smith"));
+        addLibrary.addSong(new Song("Rock Star", "John Smith", "/Test.mp3"));
+        addLibrary.addSong(new Song("Rock On", "Randy Smith", "/Test.mp3"));
         assertEquals(2, addLibrary.songCount());        
     }
     
     @Test
     public void removeSongTest(){
        Library removeLibrary = new Library();
-        removeLibrary.addSong(new Song("Rock Star", "John Smith"));
-        removeLibrary.addSong(new Song("Rock On", "Randy Smith"));
-        removeLibrary.deleteSong(new Song("Rock On", "Randy Smith"));
+        removeLibrary.addSong(new Song("Rock Star", "John Smith", "/Test.mp3"));
+        removeLibrary.addSong(new Song("Rock On", "Randy Smith", "/Test.mp3"));
+        Song songToRemove = new Song("Rock On", "Randy Smith", "/Test.mp3");
+        removeLibrary.deleteSong(songToRemove);
+        List<Song> remainingSongs = removeLibrary.getAllSongs();
         assertEquals(1, removeLibrary.songCount());
+        assertFalse(remainingSongs.contains(songToRemove)); 
+
     }
     
     @Test
     public void songNotExsistAfterRemoveTest(){
         Library removeLibrary = new Library();
-        removeLibrary.addSong(new Song("Rock Star", "John Smith"));
-        removeLibrary.addSong(new Song("Rock On", "Randy Smith"));
-        removeLibrary.deleteSong(new Song("Rock Star", "John Smith"));
-        removeLibrary.deleteSong(new Song("Rock On", "Randy Smith"));
-        
-       // assertEquals(removeLibrary.songs.);
+        removeLibrary.addSong(new Song("Rock Star", "John Smith", "/Test.mp3"));
+        removeLibrary.addSong(new Song("Rock On", "Randy Smith", "/Test.mp3"));
+        removeLibrary.deleteSong(new Song("Rock Star", "John Smith", "/Test.mp3"));
+        removeLibrary.deleteSong(new Song("Rock On", "Randy Smith", "/Test.mp3"));
         assertEquals(0, removeLibrary.songCount());   
     }
     
